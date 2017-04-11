@@ -1,0 +1,15 @@
+>li.todo
+	>div.view
+		>input.toggle
+			#type = checkbox
+			%checked = {{completed}}
+		>label
+			@dblclick = edit
+			.{{title}}
+		>button.destroy
+			@click = destroy
+	>input.edit#edit
+		%value = {{update}}
+		@click = stop
+		@keydown = confirm
+		@blur = confirm

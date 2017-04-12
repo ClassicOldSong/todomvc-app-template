@@ -17,3 +17,6 @@ cache/
 
 # node modules
 node_modules/
+
+# Built files
+js/

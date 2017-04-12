@@ -154,6 +154,7 @@ const cancleEdit = (state) => {
 }
 
 const confirm = ({e, state}) => {
+	e.preventDefault()
 	if (e.keyCode === ENTER_KEY || e.type === 'blur') return confirmEdit(state)
 	if (e.keyCode === ESCAPE_KEY) return cancleEdit(state)
 }

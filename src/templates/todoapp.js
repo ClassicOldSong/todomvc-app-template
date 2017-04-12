@@ -127,14 +127,15 @@ const toggleComplete = function(checked) {
 		this.$element.classList.add('completed')
 		ARR.remove(todos, this)
 		completed.push(this)
+		if (location.hash === '#/active') main.todos.remove(this)
 	} else {
 		this.$element.classList.remove('completed')
 		todos.push(this)
 		ARR.remove(completed, this)
+		if (location.hash === '#/completed') main.todos.remove(this)
 	}
 	updateCount()
 	updateStorage()
-	if (location.hash !== '#/') updateList(location.hash)
 }
 
 const confirmEdit = (state) => {

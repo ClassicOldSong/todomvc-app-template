@@ -154,8 +154,10 @@ const cancleEdit = (state) => {
 }
 
 const confirm = ({e, state}) => {
-	e.preventDefault()
-	if (e.keyCode === ENTER_KEY || e.type === 'blur') return confirmEdit(state)
+	if (e.keyCode === ENTER_KEY || e.type === 'blur') {
+		e.preventDefault()
+		return confirmEdit(state)
+	}
 	if (e.keyCode === ESCAPE_KEY) return cancleEdit(state)
 }
 
@@ -178,14 +180,17 @@ const add = (value) => {
 	})
 
 	all.push(todo)
-	if (!value.completed) todos.push(todo)
 	storage.push(todo.$data)
+
+	if (!value.completed) {
+		todos.push(todo)
+		if (location.hash !== '#/completed') main.todos.push(todo)
+	}
 
 	todo.$subscribe('completed', toggleComplete.bind(todo))
 
 	updateCount()
 	updateStorage()
-	updateList(location.hash)
 
 	todoapp.$nodes.input.focus()
 }
@@ -209,6 +214,8 @@ if (lastStorage) {
 	const lastTodos = JSON.parse(lastStorage)
 	for (let i of lastTodos) add(i)
 }
+
+if (!(/^#\/(active|completed)?$/).test(location.hash)) window.location = '#/'
 
 updateList(location.hash)
 

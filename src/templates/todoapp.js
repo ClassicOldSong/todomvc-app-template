@@ -137,8 +137,6 @@ const toggleComplete = function(checked) {
 	if (!location.hash === '#/') updateList(location.hash)
 }
 
-const stop = ({e}) => e.stopPropagation()
-
 const confirmEdit = (state) => {
 	state.$methods.confirm = null
 	if (!state.$data.update) return destroy({state})
@@ -172,7 +170,6 @@ const add = (value) => {
 	const todo = _todo.render({
 		$data: value,
 		$methods: {
-			stop,
 			edit,
 			destroy
 		}

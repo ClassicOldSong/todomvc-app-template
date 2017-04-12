@@ -10,6 +10,5 @@
 			@click = destroy
 	>input.edit#edit
 		%value = {{update}}
-		@click = stop
 		@keydown = confirm
 		@blur = confirm

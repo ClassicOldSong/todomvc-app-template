@@ -2,7 +2,7 @@
 	>header.header
 		>h1
 			.todos
-		>input.new-todo
+		>input.new-todo#input
 			#placeholder = What needs to be done?
 			#autofocus
 			%value = {{input}}

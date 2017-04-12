@@ -143,14 +143,15 @@ const confirmEdit = (state) => {
 	state.$methods.confirm = null
 	if (!state.$data.update) return destroy({state})
 	state.$element.classList.remove('editing')
-	state.$data.title = state.$data.update
+	state.$data.title = state.$data.update.trim()
+	state.$data.update = ''
 	updateStorage()
 }
 
 const cancleEdit = (state) => {
 	state.$element.classList.remove('editing')
 	state.$methods.confirm = null
-	state.$data.update = state.$data.title
+	state.$data.update = ''
 }
 
 const confirm = ({e, state}) => {
@@ -186,6 +187,8 @@ const add = (value) => {
 	updateCount()
 	updateStorage()
 	updateList(location.hash)
+
+	todoapp.$nodes.input.focus()
 }
 
 const addTodo = ({e, state, value}) => {

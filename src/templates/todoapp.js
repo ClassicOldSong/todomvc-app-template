@@ -28,12 +28,11 @@ const updateStorage = () => {
 }
 
 const sortList = (l, r) => {
-	if (l.$data.order > r.$data.order) return true
-	return false
+	if (l.$data.order > r.$data.order) return 1
+	return -1
 }
 
 const updateList = (hash) => {
-	main.todos = null
 	switch (hash) {
 		case '#/active': {
 			main.todos = todos.sort(sortList)
@@ -54,7 +53,7 @@ const updateList = (hash) => {
 			break
 		}
 		default: {
-			main.todos = all.sort(sortList)
+			main.todos = all
 			footer.$data = {
 				allSelected: 'selected',
 				activeSelected: '',
@@ -93,6 +92,7 @@ const toggleAll = (value) => {
 		const _completed = ARR.copy(completed)
 		for (let i of _completed) i.$data.completed = false
 	}
+	if (location.hash !== '#/') updateList(location.hash)
 }
 
 const clear = () => {
@@ -134,7 +134,7 @@ const toggleComplete = function(checked) {
 	}
 	updateCount()
 	updateStorage()
-	if (!location.hash === '#/') updateList(location.hash)
+	if (location.hash !== '#/') updateList(location.hash)
 }
 
 const confirmEdit = (state) => {

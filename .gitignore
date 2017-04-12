@@ -16,4 +16,6 @@ cache/
 # Project files
 
 # node modules
-node_modules/
+node_modules/*
+!node_modules/todomvc-app-css/*
+!node_modules/todomvc-common/*

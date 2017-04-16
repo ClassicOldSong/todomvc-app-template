@@ -1,6 +1,6 @@
 {
   "name": "todomvc-efjs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "TodoMVC written with ef.js",
   "main": "dist/main.min.js",
   "scripts": {
@@ -38,7 +38,7 @@
     "rollup": "^0.41.5",
     "rollup-plugin-buble": "^0.15.0",
     "rollup-plugin-commonjs": "^5.0.5",
-    "rollup-plugin-eft": "^0.1.29",
+    "rollup-plugin-eft": "^0.1.33",
     "rollup-plugin-eslint": "^3.0.0",
     "rollup-plugin-json": "^2.1.0",
     "rollup-plugin-node-resolve": "^2.0.0",

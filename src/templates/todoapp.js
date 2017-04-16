@@ -7,9 +7,6 @@ import _footer from './tmpls/footer.eft'
 
 import ARR from '../array-helper.js'
 
-const ENTER_KEY = 13
-const ESCAPE_KEY = 27
-
 const todoapp = _todoapp.render()
 const main = _main.render()
 const footer = _footer.render()
@@ -138,34 +135,24 @@ const toggleComplete = function(checked) {
 	updateStorage()
 }
 
-const confirmEdit = (state) => {
+const confirm = ({e, state}) => {
 	const newVal = state.$data.update.trim()
-	state.$methods.confirm = null
 	if (!newVal) return destroy({state})
 	state.$element.classList.remove('editing')
 	state.$data.title = newVal
-	state.$data.update = ''
+	if (e.type === 'blur') state.$data.update = ''
 	updateStorage()
 }
 
-const cancleEdit = (state) => {
+const cancle = ({state}) => {
 	state.$element.classList.remove('editing')
 	state.$methods.confirm = null
 	state.$data.update = ''
-}
-
-const confirm = ({e, state}) => {
-	if (e.keyCode === ENTER_KEY || e.type === 'blur') {
-		e.preventDefault()
-		return confirmEdit(state)
-	}
-	if (e.keyCode === ESCAPE_KEY) return cancleEdit(state)
 }
 
 const edit = ({state}) => {
 	state.$element.classList.add('editing')
 	state.$data.update = state.$data.title
-	state.$methods.confirm = confirm
 	state.$nodes.edit.focus()
 }
 
@@ -176,6 +163,8 @@ const add = (value) => {
 		$data: value,
 		$methods: {
 			edit,
+			cancle,
+			confirm,
 			destroy
 		}
 	})
@@ -183,10 +172,7 @@ const add = (value) => {
 	all.push(todo)
 	storage.push(todo.$data)
 
-	if (!value.completed) {
-		todos.push(todo)
-		if (location.hash !== '#/completed') main.todos.push(todo)
-	}
+	if (!value.completed && location.hash !== '#/completed') main.todos.push(todo)
 
 	todo.$subscribe('completed', toggleComplete.bind(todo))
 
@@ -196,9 +182,9 @@ const add = (value) => {
 	todoapp.$nodes.input.focus()
 }
 
-const addTodo = ({e, state, value}) => {
+const addTodo = ({state, value}) => {
 	value = value.trim()
-	if (e.keyCode !== ENTER_KEY || !value) return
+	if (!value) return
 	state.$data.input = ''
 	add({
 		title: value,

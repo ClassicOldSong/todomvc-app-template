@@ -6,6 +6,6 @@
 			#placeholder = What needs to be done?
 			#autofocus
 			%value = {{input}}
-			@keypress.13.prevent = addTodo:{{input}}
+			@keypress.prevent.13 = addTodo:{{input}}
 	-main
 	-footer

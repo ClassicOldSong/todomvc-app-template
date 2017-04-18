@@ -135,8 +135,8 @@ const toggleComplete = function(checked) {
 	updateStorage()
 }
 
-const confirm = ({e, state}) => {
-	const newVal = state.$data.update.trim()
+const confirm = ({e, state, value}) => {
+	const newVal = value.trim()
 	if (!newVal) return destroy({state})
 	state.$element.classList.remove('editing')
 	state.$data.title = newVal
@@ -144,10 +144,9 @@ const confirm = ({e, state}) => {
 	updateStorage()
 }
 
-const cancle = ({state}) => {
+const cancle = ({state, value}) => {
 	state.$element.classList.remove('editing')
-	state.$methods.confirm = null
-	state.$data.update = ''
+	state.$data.update = value
 }
 
 const edit = ({state}) => {

@@ -10,6 +10,6 @@
 			@click = destroy
 	>input.edit#edit
 		%value = {{update}}
-		@keydown.13.prevent = confirm
-		@keydown.27 = cancle
-		@blur = confirm
+		@keydown.13.prevent = confirm:{{update}}
+		@keydown.27 = cancle:{{title}}
+		@blur = confirm:{{update}}

@@ -72,8 +72,8 @@ const updateCount = () => {
 	if (all.length !== 0 && all.length === completed.length) main.$data.allCompleted = true
 	else main.$data.allCompleted = false
 
-	if (completed.length === 0) footer.$nodes.clear.style.display = 'none'
-	else footer.$nodes.clear.style.display = 'block'
+	if (completed.length === 0) footer.$refs.clear.style.display = 'none'
+	else footer.$refs.clear.style.display = 'block'
 	footer.$data.count = todos.length
 	if (todos.length > 1) footer.$data.s = 's'
 	else footer.$data.s = ''
@@ -152,7 +152,7 @@ const cancle = ({state, value}) => {
 const edit = ({state}) => {
 	state.$element.classList.add('editing')
 	state.$data.update = state.$data.title
-	state.$nodes.edit.focus()
+	state.$refs.edit.focus()
 }
 
 const add = (value) => {
@@ -178,7 +178,7 @@ const add = (value) => {
 	updateCount()
 	updateStorage()
 
-	todoapp.$nodes.input.focus()
+	todoapp.$refs.input.focus()
 }
 
 const addTodo = ({state, value}) => {

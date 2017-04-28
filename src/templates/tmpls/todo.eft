@@ -11,5 +11,5 @@
 	>input.edit#edit
 		%value = {{update}}
 		@keydown.13.prevent = confirm:{{update}}
-		@keydown.27 = cancle:{{title}}
+		@keydown.27 = cancel:{{title}}
 		@blur = confirm:{{update}}

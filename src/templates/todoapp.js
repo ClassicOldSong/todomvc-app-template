@@ -144,7 +144,7 @@ const confirm = ({e, state, value}) => {
 	updateStorage()
 }
 
-const cancle = ({state, value}) => {
+const cancel = ({state, value}) => {
 	state.$element.classList.remove('editing')
 	state.$data.update = value
 }
@@ -162,7 +162,7 @@ const add = (value) => {
 		$data: value,
 		$methods: {
 			edit,
-			cancle,
+			cancel,
 			confirm,
 			destroy
 		}

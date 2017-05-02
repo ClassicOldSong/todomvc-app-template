@@ -1,3 +1,5 @@
+import {inform, exec} from 'ef.js'
+
 import 'classlist-polyfill'
 
 import _todoapp from './tmpls/todoapp.eft'
@@ -7,9 +9,9 @@ import _footer from './tmpls/footer.eft'
 
 import ARR from '../array-helper.js'
 
-const todoapp = _todoapp.render()
-const main = _main.render()
-const footer = _footer.render()
+const todoapp = new _todoapp()
+const main = new _main()
+const footer = new _footer()
 let order = 0
 
 todoapp.main = main
@@ -30,6 +32,7 @@ const sortList = (l, r) => {
 }
 
 const updateList = (hash) => {
+	inform()
 	switch (hash) {
 		case '#/active': {
 			main.todos = todos.sort(sortList)
@@ -38,6 +41,7 @@ const updateList = (hash) => {
 				activeSelected: 'selected',
 				completedSelected: ''
 			}
+			exec()
 			break
 		}
 		case '#/completed': {
@@ -47,6 +51,7 @@ const updateList = (hash) => {
 				activeSelected: '',
 				completedSelected: 'selected'
 			}
+			exec()
 			break
 		}
 		default: {
@@ -56,6 +61,7 @@ const updateList = (hash) => {
 				activeSelected: '',
 				completedSelected: ''
 			}
+			exec()
 		}
 	}
 }
@@ -79,7 +85,8 @@ const updateCount = () => {
 	else footer.$data.s = ''
 }
 
-const toggleAll = (value) => {
+const toggleAll = ({value}) => {
+	inform()
 	if (value) {
 		const _todos = ARR.copy(todos)
 		for (let i of _todos) {
@@ -90,9 +97,11 @@ const toggleAll = (value) => {
 		for (let i of _completed) i.$data.completed = false
 	}
 	if (location.hash !== '#/') updateList(location.hash)
+	exec()
 }
 
 const clear = () => {
+	inform()
 	for (let i of completed) {
 		ARR.remove(all, i)
 		ARR.remove(storage, i.$data)
@@ -103,9 +112,11 @@ const clear = () => {
 	updateCount()
 	updateStorage()
 	updateList(location.hash)
+	exec()
 }
 
 const destroy = ({state}) => {
+	inform()
 	ARR.remove(all, state)
 	main.todos.remove(state)
 
@@ -117,9 +128,11 @@ const destroy = ({state}) => {
 	updateCount()
 	updateStorage()
 	updateList(location.hash)
+	exec()
 }
 
-const toggleComplete = function(checked) {
+const toggleComplete = function({value: checked}) {
+	inform()
 	if (checked) {
 		this.$element.classList.add('completed')
 		ARR.remove(todos, this)
@@ -133,32 +146,39 @@ const toggleComplete = function(checked) {
 	}
 	updateCount()
 	updateStorage()
+	exec()
 }
 
 const confirm = ({e, state, value}) => {
+	inform()
 	const newVal = value.trim()
 	if (!newVal) return destroy({state})
 	state.$element.classList.remove('editing')
 	state.$data.title = newVal
 	if (e.type === 'blur') state.$data.update = ''
 	updateStorage()
+	exec()
 }
 
 const cancel = ({state, value}) => {
+	inform()
 	state.$element.classList.remove('editing')
 	state.$data.update = value
+	exec()
 }
 
 const edit = ({state}) => {
+	inform()
 	state.$element.classList.add('editing')
 	state.$data.update = state.$data.title
 	state.$refs.edit.focus()
+	exec()
 }
 
 const add = (value) => {
 	value.order = order += 1
 	value.completed = !!value.completed
-	const todo = _todo.render({
+	const todo = new _todo({
 		$data: value,
 		$methods: {
 			edit,
@@ -183,12 +203,14 @@ const add = (value) => {
 
 const addTodo = ({state, value}) => {
 	value = value.trim()
+	inform()
 	if (!value) return
 	state.$data.input = ''
 	add({
 		title: value,
 		completed: false
 	})
+	exec()
 }
 
 todoapp.$methods.addTodo = addTodo

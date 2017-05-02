@@ -118,10 +118,7 @@ const clear = () => {
 const destroy = ({state}) => {
 	inform()
 	ARR.remove(all, state)
-	main.todos.remove(state)
-
 	ARR.remove(storage, state.$data)
-	ARR.remove(todos, state)
 	ARR.remove(completed, state)
 
 	state.$destroy()
@@ -152,7 +149,7 @@ const toggleComplete = function({value: checked}) {
 const confirm = ({e, state, value}) => {
 	inform()
 	const newVal = value.trim()
-	if (!newVal) return destroy({state})
+	if (!newVal) return exec(destroy({state}))
 	state.$element.classList.remove('editing')
 	state.$data.title = newVal
 	if (e.type === 'blur') state.$data.update = ''
@@ -175,12 +172,17 @@ const edit = ({state}) => {
 	exec()
 }
 
+const blur = ({state}) => {
+	state.$refs.edit.blur()
+}
+
 const add = (value) => {
 	value.order = order += 1
 	value.completed = !!value.completed
 	const todo = new _todo({
 		$data: value,
 		$methods: {
+			blur,
 			edit,
 			cancel,
 			confirm,

@@ -1,3 +1,10 @@
 import todoapp from './templates/todoapp.js'
+import * as ef from 'ef.js'
 
-document.querySelector('body').replaceChild(todoapp.$element, document.querySelector('.todoapp'))
+todoapp.$mount({
+	target: '.todoapp',
+	option: 'replace'
+})
+
+window.todoapp = todoapp
+window.ef = ef

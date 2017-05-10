@@ -27,7 +27,7 @@ const updateStorage = () => {
 }
 
 const sortList = (l, r) => {
-	if (l.$data.order > r.$data.order) return 1
+	if (l.$data.stored.order > r.$data.stored.order) return 1
 	return -1
 }
 
@@ -41,7 +41,6 @@ const updateList = (hash) => {
 				activeSelected: 'selected',
 				completedSelected: ''
 			}
-			exec()
 			break
 		}
 		case '#/completed': {
@@ -51,7 +50,6 @@ const updateList = (hash) => {
 				activeSelected: '',
 				completedSelected: 'selected'
 			}
-			exec()
 			break
 		}
 		default: {
@@ -61,9 +59,9 @@ const updateList = (hash) => {
 				activeSelected: '',
 				completedSelected: ''
 			}
-			exec()
 		}
 	}
+	exec()
 }
 
 const updateCount = () => {
@@ -90,11 +88,11 @@ const toggleAll = ({value}) => {
 	if (value) {
 		const _todos = ARR.copy(todos)
 		for (let i of _todos) {
-			i.$data.completed = true
+			i.$data.stored.completed = true
 		}
 	} else if (completed.length === all.length) {
 		const _completed = ARR.copy(completed)
-		for (let i of _completed) i.$data.completed = false
+		for (let i of _completed) i.$data.stored.completed = false
 	}
 	if (location.hash !== '#/') updateList(location.hash)
 	exec()
@@ -104,7 +102,7 @@ const clear = () => {
 	inform()
 	for (let i of completed) {
 		ARR.remove(all, i)
-		ARR.remove(storage, i.$data)
+		ARR.remove(storage, i.$data.stored)
 		main.todos.remove(i)
 		i.$destroy()
 	}
@@ -118,7 +116,7 @@ const clear = () => {
 const destroy = ({state}) => {
 	inform()
 	ARR.remove(all, state)
-	ARR.remove(storage, state.$data)
+	ARR.remove(storage, state.$data.stored)
 	ARR.remove(completed, state)
 
 	state.$destroy()
@@ -131,14 +129,15 @@ const destroy = ({state}) => {
 const toggleComplete = function({value: checked}) {
 	inform()
 	if (checked) {
-		this.$element.classList.add('completed')
+		this.$data.completed = 'completed'
 		ARR.remove(todos, this)
 		completed.push(this)
 		if (location.hash === '#/active') main.todos.remove(this)
 	} else {
-		this.$element.classList.remove('completed')
+		this.$data.completed = ''
 		todos.push(this)
 		ARR.remove(completed, this)
+		window._this_ = this
 		if (location.hash === '#/completed') main.todos.remove(this)
 	}
 	updateCount()
@@ -151,7 +150,7 @@ const confirm = ({e, state, value}) => {
 	const newVal = value.trim()
 	if (!newVal) return exec(destroy({state}))
 	state.$element.classList.remove('editing')
-	state.$data.title = newVal
+	state.$data.stored.title = newVal
 	if (e.type === 'blur') state.$data.update = ''
 	updateStorage()
 	exec()
@@ -167,7 +166,7 @@ const cancel = ({state, value}) => {
 const edit = ({state}) => {
 	inform()
 	state.$element.classList.add('editing')
-	state.$data.update = state.$data.title
+	state.$data.update = state.$data.stored.title
 	state.$refs.edit.focus()
 	exec()
 }
@@ -180,7 +179,7 @@ const add = (value) => {
 	value.order = order += 1
 	value.completed = !!value.completed
 	const todo = new _todo({
-		$data: value,
+		$data: {stored: value},
 		$methods: {
 			blur,
 			edit,
@@ -191,11 +190,11 @@ const add = (value) => {
 	})
 
 	all.push(todo)
-	storage.push(todo.$data)
+	storage.push(todo.$data.stored)
 
 	if (!value.completed && location.hash !== '#/completed') main.todos.push(todo)
 
-	todo.$subscribe('completed', toggleComplete.bind(todo))
+	todo.$subscribe('stored.completed', toggleComplete.bind(todo))
 
 	updateCount()
 	updateStorage()
@@ -222,7 +221,9 @@ main.$subscribe('allCompleted', toggleAll)
 const lastStorage = localStorage.getItem('todos-ef')
 if (lastStorage) {
 	const lastTodos = JSON.parse(lastStorage)
+	inform()
 	for (let i of lastTodos) add(i)
+	exec()
 }
 
 if (!(/^#\/(active|completed)?$/).test(location.hash)) window.location = '#/'

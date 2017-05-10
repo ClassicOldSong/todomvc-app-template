@@ -1,15 +1,15 @@
->li.todo
+>li.todo.{{completed}}
 	>div.view
 		>input.toggle
 			#type = checkbox
-			%checked = {{completed}}
+			%checked = {{stored.completed}}
 		>label
 			@dblclick = edit
-			.{{title}}
+			.{{stored.title}}
 		>button.destroy
 			@click = destroy
 	>input.edit#edit
-		%value = {{update}}
+		%value = {{stored.update}}
 		@keydown.13.prevent = blur
-		@keydown.27 = cancel:{{title}}
+		@keydown.27 = cancel:{{stored.title}}
 		@blur = confirm:{{update}}

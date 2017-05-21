@@ -118,6 +118,7 @@ const destroy = ({state}) => {
 	ARR.remove(all, state)
 	ARR.remove(storage, state.$data.stored)
 	ARR.remove(completed, state)
+	ARR.remove(todos, state)
 
 	state.$destroy()
 	updateCount()
@@ -149,7 +150,7 @@ const confirm = ({e, state, value}) => {
 	inform()
 	const newVal = value.trim()
 	if (!newVal) return exec(destroy({state}))
-	state.$element.classList.remove('editing')
+	state.$data.editing = ''
 	state.$data.stored.title = newVal
 	if (e.type === 'blur') state.$data.update = ''
 	updateStorage()
@@ -158,17 +159,17 @@ const confirm = ({e, state, value}) => {
 
 const cancel = ({state, value}) => {
 	inform()
-	state.$element.classList.remove('editing')
+	state.$data.editing = ''
 	state.$data.update = value
 	exec()
 }
 
 const edit = ({state}) => {
 	inform()
-	state.$element.classList.add('editing')
 	state.$data.update = state.$data.stored.title
-	state.$refs.edit.focus()
+	state.$data.editing = 'editing'
 	exec()
+	state.$refs.edit.focus()
 }
 
 const blur = ({state}) => {

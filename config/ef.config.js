@@ -1,8 +1,7 @@
-module.exports = {
-	entry: 'src/app.js',
-	bundle: 'js/app.js',
+export default {
+	input: 'src/app.js',
+	name: 'todomvc',
+	bundle: 'app',
 	devPath: '.',
-	proPath: '.',
-	format: 'iife',
-	sourceMap: 'inline'
+	proPath: '.'
 }

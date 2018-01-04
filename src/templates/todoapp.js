@@ -206,7 +206,7 @@ const add = (value) => {
 const addTodo = ({state, value}) => {
 	value = value.trim()
 	inform()
-	if (!value) return
+	if (!value) return exec()
 	state.$data.input = ''
 	add({
 		title: value,

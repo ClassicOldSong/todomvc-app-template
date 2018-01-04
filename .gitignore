@@ -20,3 +20,5 @@ node_modules/
 
 # Built files
 js/
+/app.js
+/app.js.map

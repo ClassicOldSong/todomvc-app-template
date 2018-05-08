@@ -9,8 +9,12 @@ const config = {
 		name,
 		file: `${proPath}/${bundle}.js`,
 		format: 'iife',
-		sourcemap: true
+		sourcemap: true,
+		globals: {
+			'ef.js': 'ef'
+		}
 	},
+	external: ['ef.js'],
 	plugins
 }
 

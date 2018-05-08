@@ -66,11 +66,11 @@ const updateList = (hash) => {
 
 const updateCount = () => {
 	if (all.length === 0) {
-		footer.$element.style.display = 'none'
-		main.$element.style.display = 'none'
+		footer.$ctx.nodeInfo.element.style.display = 'none'
+		main.$ctx.nodeInfo.element.style.display = 'none'
 	} else {
-		footer.$element.style.display = 'block'
-		main.$element.style.display = 'block'
+		footer.$ctx.nodeInfo.element.style.display = 'block'
+		main.$ctx.nodeInfo.element.style.display = 'block'
 	}
 
 	if (all.length !== 0 && all.length === completed.length) main.$data.allCompleted = true

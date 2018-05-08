@@ -14,7 +14,6 @@ import eft from 'rollup-plugin-eft'
 import postcss from 'rollup-plugin-postcss'
 
 // Postcss plugins
-import postcssModules from 'postcss-modules'
 import simplevars from 'postcss-simple-vars'
 import nested from 'postcss-nested'
 import cssnext from 'postcss-cssnext'
@@ -46,8 +45,6 @@ switch (process.env.BUILD_ENV) {
 	}
 }
 
-const cssExportMap = {}
-
 export default {
 	input,
 	name,
@@ -74,16 +71,9 @@ export default {
 				simplevars(),
 				nested(),
 				cssnext({ warnForDuplicates: false }),
-				postcssModules({
-					getJSON(id, exportTokens) {
-						cssExportMap[id] = exportTokens
-					}
-				}),
 				cssnano()
 			],
-			getExport(id) {
-				return cssExportMap[id]
-			},
+			modules: true,
 			combineStyleTags: true
 		}),
 		replace({
